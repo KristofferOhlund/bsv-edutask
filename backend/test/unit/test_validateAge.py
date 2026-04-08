@@ -2,32 +2,24 @@ import pytest
 from src.util.helpers import ValidationHelper
 from unittest.mock import MagicMock
 
-def user_controller(age):
-    mock = MagicMock()
-    mock.get = MagicMock(return_value={"age": age})
-    return mock
+@pytest.fixture
+def helper_factory():
+    # private, only used through parent.
+    def _validation_helper_creator(age):
+        mock_user = MagicMock()
+        mock_user.get = MagicMock(return_value={"age": age})
+        validation_helper = ValidationHelper(mock_user)
+        return validation_helper
+    return _validation_helper_creator
 
-def validation_helper_creator(user_controller):
-    validation_helper = ValidationHelper(user_controller)
-    return validation_helper
 
-@pytest.mark.unit
-def test_validateAge_valid():
-    userid = "10"
-    mock_user = user_controller(30)
-    validation_helper = validation_helper_creator(mock_user)
+@pytest.fixture
+def userid():
+    return "42"
 
-    result = validation_helper.validateAge(userid)
-    
-    assert result == "valid"
 
 @pytest.mark.unit
-def test_validateAge_invalid():
-    userid = "10"
-    mock_user = user_controller(-1)
-
-    validation_helper = validation_helper_creator(mock_user)
-
-    result = validation_helper.validateAge(userid)
-    
-    assert result == "invalid"
+@pytest.mark.parametrize("test_input,expected", [(-1, "invalid"), (0, "underaged"), (1, "underaged"), (17, "underaged"), (18, "valid"), (19, "valid"), (119, "valid"), (120, "valid"), (121, "invalid")])
+def test_validateAge(test_input, expected, userid, helper_factory):
+    helper = helper_factory(test_input)
+    assert helper.validateAge(userid) == expected
