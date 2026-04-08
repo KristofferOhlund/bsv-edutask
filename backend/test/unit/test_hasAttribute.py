@@ -9,7 +9,7 @@ def create_dictionary():
     return {"Name": "Test"}
 
 @pytest.mark.unit
-def test_hasAttribute_true():
+def test_hasAttribute_true(create_dictionary):
     """
     Test if hasAttribute returns True when key exists in object
     """
@@ -23,7 +23,7 @@ def test_hasAttribute_true():
     assert result == True
 
 @pytest.mark.unit
-def test_hasAttribute_false():
+def test_hasAttribute_false(create_dictionary):
     """
     Test if hasAttribute returns False when key does not exist in object
     """
