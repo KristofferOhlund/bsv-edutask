@@ -2,7 +2,7 @@ import pytest
 from unittest.mock import MagicMock, patch
 from src.controllers.usercontroller import UserController
 
-INVAL_EMAIL_MESS = 'Error: invalid email address'
+INVAL_EMAIL_MSG = 'Error: invalid email address'
 
 class Test_user_controller:
     @pytest.fixture
@@ -32,17 +32,18 @@ class Test_user_controller:
     @pytest.mark.email
     @pytest.mark.email_invalid
     @pytest.mark.parametrize("email, expected", [
-        ("name", INVAL_EMAIL_MESS), 
-        ("domain.com", INVAL_EMAIL_MESS),
-        ("name@", INVAL_EMAIL_MESS),
-        ("@domain.com", INVAL_EMAIL_MESS),
-        ("domain.com", INVAL_EMAIL_MESS),
-        ("surname..name@domain.com", INVAL_EMAIL_MESS),
-        (".com@", INVAL_EMAIL_MESS),
-        ("surname.name@domain.com@", INVAL_EMAIL_MESS),
-        ("", INVAL_EMAIL_MESS)
+        ("name", INVAL_EMAIL_MSG), 
+        ("domain.com", INVAL_EMAIL_MSG),
+        ("name@", INVAL_EMAIL_MSG),
+        ("@domain.com", INVAL_EMAIL_MSG),
+        ("domain.com", INVAL_EMAIL_MSG),
+        ("surname..name@domain.com", INVAL_EMAIL_MSG),
+        (".com@", INVAL_EMAIL_MSG),
+        ("surname.name@domain.com@", INVAL_EMAIL_MSG),
+        ("", INVAL_EMAIL_MSG)
         ])
     def test_get_user_by_email_invalid(self, user_controller, email, expected):
+        """Test validation with malformatted email addresses"""
         with pytest.raises(ValueError) as execinfo:
             user_controller.get_user_by_email(email)
         assert expected in str(execinfo.value)
@@ -57,6 +58,7 @@ class Test_user_controller:
         ("name.\.name@domain.com", {"email": "name.\.name@domain.com"})
         ])
     def test_get_user_by_email_valid(self, user_controller, email, expected):
+        """Test the return of correct addresses"""
         result = user_controller.get_user_by_email(email)
         assert expected == result
 
@@ -68,7 +70,8 @@ class Test_user_controller:
             "email": "name@domain.com"
             })
         ])
-    def test_get_user_by_email_valid(self, user_controller_multiple_users, email, expected):
+    def test_get_user_by_email_valid_multiple(self, user_controller_multiple_users, email, expected):
+        """Test return of first address in case of multiple users with same email address"""
         result = user_controller_multiple_users.get_user_by_email(email)
         assert expected == result
 
