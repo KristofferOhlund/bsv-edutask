@@ -5,6 +5,7 @@ from src.controllers.usercontroller import UserController
 INVAL_EMAIL_MSG = 'Error: invalid email address'
 
 class Test_user_controller:
+    # Define a mock which return a user object {email: email}
     @pytest.fixture
     def user_controller(self, email):
         """Return a user_controller"""
@@ -13,6 +14,9 @@ class Test_user_controller:
         user_controller = UserController(dao_mock)
         return user_controller
     
+
+    # Define a mock which return-value is an array of users
+    # assosciated with the same adress
     @pytest.fixture
     def user_controller_multiple_users(self, email):
         """Return a user controller with multiple users"""
@@ -28,7 +32,7 @@ class Test_user_controller:
         user_controller = UserController(dao_mock)
         return user_controller
 
-
+    # Test invalid emails using user_controller fixture
     @pytest.mark.email
     @pytest.mark.email_invalid
     @pytest.mark.parametrize("email, expected", [
@@ -48,7 +52,7 @@ class Test_user_controller:
             user_controller.get_user_by_email(email)
         assert expected in str(execinfo.value)
 
-
+    # Test valid emails using user_controller fixture
     @pytest.mark.email
     @pytest.mark.email_valid
     @pytest.mark.parametrize("email, expected", [
@@ -62,6 +66,7 @@ class Test_user_controller:
         result = user_controller.get_user_by_email(email)
         assert expected == result
 
+    # Test valid emails using user_controller_multiple_users fixture
     @pytest.mark.email
     @pytest.mark.email_valid_multiple_users
     @pytest.mark.parametrize("email, expected", [
@@ -74,6 +79,19 @@ class Test_user_controller:
         """Test return of first address in case of multiple users with same email address"""
         result = user_controller_multiple_users.get_user_by_email(email)
         assert expected == result
+
+    # Test valid email but user does not exist in database
+    @pytest.mark.email
+    @pytest.mark.email_none
+    def test_email_is_none(self):
+        """
+        Test if get_user_by_email returns None when provided email is not found in the database
+        """
+        dao_mock = MagicMock()
+        dao_mock.find = MagicMock(return_value=[])
+        user_controller = UserController(dao_mock)
+        result = user_controller.get_user_by_email("mail@host.com")
+        assert result == None
 
 
 
