@@ -16,17 +16,15 @@ INVALID_VALIDATION_DATA = [
      'Document failed validation'),
     ("task", {"title": 1, "description": "my_description"},  # title is string
      'Document failed validation'),
-    ("task", {
-        # title is empty
-        "title": "", "description": "my_description"}, 'Document failed validation'),
+    ("task", {"title": "", "description": "my_description"}, 'Document failed validation'), # title is empty
     ("task", {"title": "1", "descriptions": 1},  # description is exists
      'Document failed validation'),
     ("task", {"title": "1", "description": 55},  # description is string
      'Document failed validation'),
     ("task", {"title": "1", "description": ""},  # description is empty string
      'Document failed validation'),
-    ("task", {"title": "1", "description": "my_description"},  # Title is unique
-     'Document failed validation'),
+    # ("task", {"title": "1", "description": "my_description"},  # Title is unique
+    #  'Document failed validation'),
 
     # _TODO
     ("todo", [], 'Document failed validation'),  # input data is array
@@ -36,8 +34,8 @@ INVALID_VALIDATION_DATA = [
      'Document failed validation'),
     ("todo", {"title": "1", "description": ""},  # description is empty string
      'Document failed validation'),
-    ("todo", {"title": "1", "description": "my_description"},  # Description is unique (object already created)
-     'Document failed validation'),
+    # ("todo", {"title": "1", "description": "my_description"},  # Description is unique (object already created)
+    #  'Document failed validation'),
 
     # USER
     ("user", [], 'Document failed validation'),  # input data is array
@@ -49,14 +47,16 @@ INVALID_VALIDATION_DATA = [
      'Document failed validation'),
     ("user", {"firstName": "", "no last": "name", "email": "email@hello.org"},  # Last name does not exist
      'Document failed validation'),
-    ("user", {"firstName": "", 1: "lastName", "email": "email@hello.org"},  # Last name is int
+    ("user", {"firstName": "", "lastName" : 1, "email": "email@hello.org"},  # Last name is int
      'Document failed validation'),
-    ("user", {"firstName": "", "lastName": "", "email": "email@hello.org"},  # Last name empty
+    ("user", {"firstName": "firstName", "lastName": "", "email": "email@hello.org"},  # Last name empty
      'Document failed validation'),
-    ("user", {"firstName": "", "lastName": "lastName", "no mail": "email@hello.org"},  # email does not exist
+    ("user", {"firstName": "firstName", "lastName": "lastName", "no mail": "email@hello.org"},  # email does not exist
      'Document failed validation'),
-    ("user", {"firstName": "", "lastName": "lastName", "email": ["email@mail.org"]},
-     'Document failed validation'),
+    ("user", {"firstName": "firstName", "lastName": "lastName", "email": ["email@mail.org"]},
+     'Document failed validation'), # email is not string
+    ("user", {"firstName": "firstName", "lastName": "lastName", "email": ""},
+     'Document failed validation'), # email is empty string
 
 
     ("user", {"firstName": "", "lastName": "lastName", "email": ""},  # email is empty
@@ -68,4 +68,16 @@ INVALID_VALIDATION_DATA = [
     ("video", {"url": 55}, 'Document failed validation'),  # url is not string
     # url is empty string
     ("video", {"url": ""}, 'Document failed validation'),
+]
+
+
+DUPLICATE_DATA = [
+    ("task", {"title": "my_task", "description": "my_description"},  # Title is unique
+     'Document failed validation'),
+    ("todo", {"title": "my_todo", "description": "my_description"},  # Description is unique (object already created)
+     'Document failed validation'),
+    ("user", {"firstName": "firstName", "lastName": "lastName", "email": "firstname.lastname@yahoo.com"},
+     'Document failed validation'),
+     # url is empty string
+    ("video", {"url": "https://yahoo.com"}, 'Document failed validation'),
 ]
