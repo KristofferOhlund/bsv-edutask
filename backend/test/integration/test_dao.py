@@ -11,22 +11,21 @@ def validator_file(filename):
         return json.load(f)
 
 @pytest.fixture
-def mock_dao(filename, validator_file):
+def mock_dao(validator_file):
     with patch("src.util.dao.getValidator", autospec=True) as patched_validator:
         patched_validator.return_value = validator_file
-        dao = DAO(filename)
+        dao = DAO("test")
         yield dao
         dao.drop()
 
 # ----- OK_VALIDATION_DATA -----
-# @pytest.mark.valid
-# @pytest.mark.dao
+@pytest.mark.valid
+@pytest.mark.dao
 @pytest.mark.parametrize("filename, in_data, expected", OK_VALIDATION_DATA)
-def test_dao_create_objects(mock_dao, filename, in_data, expected):
+def test_dao_create_objects(mock_dao, in_data, expected):
         dao = mock_dao
         result = dao.create(in_data)
-        assert isinstance(result, expected)
-        assert "$oid" in result["_id"]
+        assert expected in result["_id"]
         print("\nOK VALIDATION POST LENGTH: ", len(dao.find()))
 
 
@@ -34,7 +33,7 @@ def test_dao_create_objects(mock_dao, filename, in_data, expected):
 @pytest.mark.invalid_data
 @pytest.mark.dao
 @pytest.mark.parametrize("filename, in_data, expected", INVALID_VALIDATION_DATA)
-def test_dao_create_bad_data(mock_dao, filename, in_data, expected):
+def test_dao_create_bad_data(mock_dao, in_data, expected):
     dao = mock_dao
     with pytest.raises(WriteError) as execinfo:
         dao.create(in_data)
@@ -46,7 +45,7 @@ def test_dao_create_bad_data(mock_dao, filename, in_data, expected):
 # ----- DUPLICATE_DATA -----
 @pytest.mark.dao
 @pytest.mark.parametrize("filename, in_data, expected", DUPLICATE_DATA)
-def test_dao_create_duplicate_data(mock_dao, filename, in_data, expected):
+def test_dao_create_duplicate_data(mock_dao, in_data, expected):
     dao = mock_dao
     with pytest.raises(WriteError) as execinfo:
         dao.create(in_data)

@@ -1,12 +1,12 @@
 OK_VALIDATION_DATA = [
     ("task", {"title": "1", "description": "my_description"},  # Created task object
-     object),
+     "$oid"),
     ("todo", {"description": "my_description"},  # Created Todo object
-     object),
+     "$oid"),
     ("user", {"firstName": "Exempel", "lastName": "Pettersson", "email": "email@hello.org"},  # Created user object
-     object),
+     "$oid"),
     ("video", {"url": "https://yahoo.com"},  # Created video object
-     object),
+     "$oid"),
 ]
 
 INVALID_VALIDATION_DATA = [
