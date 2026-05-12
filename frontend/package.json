@@ -15,8 +15,10 @@
   "scripts": {
     "start": "react-scripts --openssl-legacy-provider start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "cypress:solutions": "cypress run --spec \"test/_solutions/gui/**/*.cy.js\"",
+    "test": "react-scripts test"
   },
   "eslintConfig": {
     "extends": [
