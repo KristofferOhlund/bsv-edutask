@@ -7,7 +7,8 @@ describe("Todo tests", () => {
     })
     
     it("Create Todo item", () => {
-      cy.get('[placeholder="Add a new todo item"]').click().type("Our first todo{enter}")
+      cy.get('[placeholder="Add a new todo item"]').click().type("Our first todo{enter}");
+      cy.contains(".todo-item", "Our first todo").should("exist");
       cy.contains(".todo-item", "Our first todo").parent().find(".remover").first().click();
     })
 
