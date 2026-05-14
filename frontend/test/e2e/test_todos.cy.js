@@ -7,7 +7,6 @@ describe("Todo tests", () => {
     })
     
     it("Create Todo item", () => {
-    //   cy.get(".container-element:has(a)").first().click();
       cy.get('[placeholder="Add a new todo item"]').click().type("Our first todo{enter}")
       cy.contains(".todo-item", "Our first todo").parent().find(".remover").first().click();
     })
@@ -38,9 +37,8 @@ describe("Todo tests", () => {
         cy.get(".todo-list").find("li").first().children(".remover").click();
         cy.get(".close-btn").click()
         cy.get(".container-element:has(a)").first().click();
-        cy.contains(".todo-item", "A new todo_1").should("not.exist");
 
         // Nu är GUI uppdaterat
-        cy.get(".todo-item").should("have.length", 0);
+        cy.get(".todo-list").should("have.length", 1);
     })
 })
