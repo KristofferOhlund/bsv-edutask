@@ -39,7 +39,7 @@ def test_hasAttribute_none():
     """
     Test if hasAttribute returns False when dict key is None
     """
-    test_dictionary = None
+    test_dictionary = {None: "value"}
 
     result = hasAttribute(test_dictionary, "hello")
     assert result == False
