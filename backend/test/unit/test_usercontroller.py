@@ -33,6 +33,7 @@ class Test_user_controller:
         return user_controller
 
     # Test invalid emails using user_controller fixture
+    @pytest.mark.unit
     @pytest.mark.email
     @pytest.mark.email_invalid
     @pytest.mark.parametrize("email, expected", [
@@ -53,6 +54,7 @@ class Test_user_controller:
         assert expected in str(execinfo.value)
 
     # Test valid emails using user_controller fixture
+    @pytest.mark.unit
     @pytest.mark.email
     @pytest.mark.email_valid
     @pytest.mark.parametrize("email, expected", [
@@ -67,6 +69,7 @@ class Test_user_controller:
         assert expected == result
 
     # Test valid emails using user_controller_multiple_users fixture
+    @pytest.mark.unit
     @pytest.mark.email
     @pytest.mark.email_valid_multiple_users
     @pytest.mark.parametrize("email, expected", [
@@ -81,6 +84,7 @@ class Test_user_controller:
         assert expected == result
 
     # Test valid email but user does not exist in database
+    @pytest.mark.unit
     @pytest.mark.email
     @pytest.mark.email_none
     def test_email_is_none(self):
