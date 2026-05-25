@@ -2,7 +2,7 @@ from src.controllers.controller import Controller
 from src.util.dao import DAO
 
 import re
-emailValidator = re.compile(r'^([^\W]+\.?(\\\.)?[^\W]+){1,}@[^\W]+.[^\W]+$')
+emailValidator = re.compile(r'^([^\W]+\.?(\\\.)?[^\W]+){1,}@([^\W]+\.?(\\\.)?[^\W]+){1,}.[^\W]+$')
 # emailValidator = re.compile(r'.*@.*')
 
 class UserController(Controller):
