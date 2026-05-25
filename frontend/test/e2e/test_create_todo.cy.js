@@ -1,5 +1,5 @@
-describe("Todo tests", () => {
-  before(() => {
+describe("Create todo", () => {
+  beforeEach(() => {
     // To create waiters for updates in DOM
     // https://docs.cypress.io/api/commands/wait
     cy.intercept("GET", "**/users/**").as("getUser");
@@ -17,7 +17,7 @@ describe("Todo tests", () => {
     // https://docs.cypress.io/api/commands/each#DOM-Elements
   });
 
-  it("Create named Todo item", () => {
+  it("Create Todo item", () => {
     // Cont. Arrange
     cy.get('[placeholder="Add a new todo item"]').should("be.visible");
 
@@ -31,6 +31,13 @@ describe("Todo tests", () => {
 
     // Assert
     cy.contains(".todo-item", "Our first todo").should("be.visible");
+  });
+
+  it("Button is disabled on empty input", () => {
+    cy.get(".todo-list").find('input[type="submit"]').should("be.disabled");
+    cy.get(".todo-list")
+      .find('input[type="submit"]')
+      .should("have.attr", "disabled");
   });
 
   after(() => {
